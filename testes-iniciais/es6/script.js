@@ -33,5 +33,6 @@ let estudantes = [
 let nomeEstudante = (i=1) => estudantes.find(estudante => estudante.id===i);
 
 let nomesTodos= () => estudantes.forEach(estudante => console.log(`Nome do estudante: ${estudante.nome}`));
+//let todosOsNomes= () => estudantes.map(estudante => `Nome do estudante: ${estudante.nome}`);
 
 let maisVelhos= (a=20) => estudantes.filter(estudante => estudante.idade>a);

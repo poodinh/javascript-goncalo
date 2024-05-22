@@ -18,14 +18,17 @@ const person = {
 };
 
 const companiesName = () => {
-  companies.forEach(companie => console.log(`O nome desta empresa é ${companie.name} e foi fundada em ${companie.start}`));
+  companies.forEach(company => console.log(`O nome desta empresa é ${company.name} e foi fundada em ${company.start}`));
 };
 
 const startDate = (start=1987) => {
-  return companies.filter(companie => companie.start>start);
+  return companies.filter(company => company.start>start);
 }; //se tiver chavetas tem de ter return!!!!!
 
-const sumAges = ages.reduce((accumulator, currentValue) => accumulator + currentValue,0);
+const sumAges = ages.reduce((accumulator, age) => accumulator + age,0);
+
+// const {name,category}= companies{0};
+// const newObjectCompany = {name:name, category:category};
 
 const [a, ...rest]=companies;
 console.log(a.name, a.category);
@@ -42,6 +45,6 @@ console.log(a.name, a.category);
 const {name, address:{street}}= person;
 console.log(street); //agora deu direito
 
-const companyStart= (start=1996, end=2004) => {
-  return companies.map(company => (company.start > start && company.start<= end)?true:false)
-};
+const companyStart= (start=1996, end=2004) =>
+  companies.map(company => 
+    company.start > start && company.start<= end?true:false);

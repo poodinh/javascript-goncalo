@@ -1,4 +1,4 @@
-let soma = (a=1,b=1) =>{
+let sum = (a=1,b=1) =>{
     const total=a+b;
 
     const promise = new Promise((resolve,reject)=>{

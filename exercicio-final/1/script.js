@@ -8,13 +8,14 @@ class Ecommerce{
 
     addProduct(product= tshirt){
         if(typeof product === 'object' && !Array.isArray(product) && product !== null){
-            if (typeof product.name === 'string' && typeof product.price === 'number' && typeof product.id === 'number')
+            const objKeys = product.keys()
+            if (objKeys.lastIndexOf('name') >=0 && objKeys.lastIndexOf('price') >=0 && objKeys.lastIndexOf('id') >=0)
                 {this.productList.push(product);}
-            else if(typeof product.name !== 'string')
+            else if(objKeys.lastIndexOf('name') <0)
                 {return "Object doesn't have a name!";}
-            else if(typeof product.price !== 'number')
+            else if(objKeys.lastIndexOf('price') <0)
                 {return "Object doesn't have a price!";}
-            else if(typeof product.id !== 'number')
+            else if(objKeys.lastIndexOf('id') <0)
                 {return "Object doesn't have an id!";}
             else
                 {return 'Invalid object! It needs a name, price and id!';}
@@ -95,13 +96,14 @@ class Ecommerce{
 
     addProductToCart(product = tshirt){
         if(typeof product === 'object' && !Array.isArray(product) && product !== null){
-            if (typeof product.name === 'string' && typeof product.price === 'number' && typeof product.id === 'number')
+            const objKeys = product.keys()
+            if (objKeys.lastIndexOf('name') >=0 && objKeys.lastIndexOf('price') >=0 && objKeys.lastIndexOf('id') >=0)
                 {this.cart.push(product);}
-            else if(typeof product.name !== 'string')
+            else if(objKeys.lastIndexOf('name') <0)
                 {return "Object doesn't have a name!";}
-            else if(typeof product.price !== 'number')
+            else if(objKeys.lastIndexOf('price') <0)
                 {return "Object doesn't have a price!";}
-            else if(typeof product.id !== 'number')
+            else if(objKeys.lastIndexOf('id') <0)
                 {return "Object doesn't have an id!";}
             else
                 {return 'Invalid object! It needs a name, price and id!';}

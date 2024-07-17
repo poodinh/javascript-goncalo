@@ -1,21 +1,73 @@
-const products= async () => {
+const cart ={
+    userId:1,
+    data: new Date().toISOString().split('-')[0],
+    products:[]
+}
+
+const data= async () => {
     const response = await fetch('https://fakestoreapi.com/products');
     const dataBase = await response.json();
-    const length= dataBase.length
+    return dataBase
+}
+
+const productsGrid = async () =>{
+    const dataBase = await data();
+    const dataSize= dataBase.length;
     const images= dataBase.map(data => data.image);
     const titles= dataBase.map(data => data.title);
+    
     const grid= document.createElement ('div');
     grid.setAttribute('class','products--grid');
+    document.body.appendChild(grid)
     
-    for (i=0; i<= length-1; i++){
+    for (i=0; i<= dataSize-1; i++){
         grid.insertAdjacentHTML("beforeend",
             `<div class='product--block'>
                 <p>${titles[i]}</p>
                 <img src="${images[i]}" alt="loading"></img>
             </div>`);
     }
-    document.body.appendChild(grid)
+    
+
     return grid
 }
 
-products()
+
+const cartButton = async () => {
+    const dataBase = await data();
+    const gridCreated = await productsGrid();
+
+    const allIds=dataBase.map(data => data.id);
+
+    const prodBlock = gridCreated.querySelectorAll('.product--block');
+    prodBlock.forEach(div => {div.insertAdjacentHTML("beforeend",
+        `<button> Add to Cart </button>`
+    );});
+    const buttons= gridCreated.querySelectorAll('button');
+
+
+    for (i = 0; i <= dataBase.length-1; i++) {
+        const prodId = allIds[i]
+        const product = {
+            productId: prodId,
+            quantity: 1
+        }
+      
+        buttons[i].addEventListener('click',()=>{
+            const isProdInCart = cart.products.find(prodInCart =>{
+                prodInCart.productId===prodId
+            })
+            console.log(isProdInCart)
+            if(isProdInCart){
+                    isProdInCart.quantity= +1
+                }else{
+                    cart.products.push(product)
+                }
+            })  
+    }
+        
+    };
+
+
+
+cartButton()

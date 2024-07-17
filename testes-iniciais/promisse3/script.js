@@ -57,3 +57,4 @@ const nameAsync4= async (x='Gonçalo')=>{
     console.log(result);} 
     catch (e) {console.log(e)}
 } // se não quiser que apareça o erro
+

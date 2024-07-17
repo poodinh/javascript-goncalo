@@ -48,23 +48,23 @@ const cartButton = async () => {
 
     for (i = 0; i <= dataBase.length-1; i++) {
         const prodId = allIds[i]
-        const product = {
-            productId: prodId,
-            quantity: 1
-        }
+        
       
         buttons[i].addEventListener('click',()=>{
-            const isProdInCart = cart.products.find(prodInCart =>{
-                prodInCart.productId===prodId
-            })
-            console.log(isProdInCart)
-            if(isProdInCart){
-                    isProdInCart.quantity= +1
+            const isProdInCart = cart.products.findIndex(prodInCart =>prodInCart.productId===prodId)
+      
+            if(isProdInCart !== -1){
+                    cart.products[isProdInCart].quantity += 1;
                 }else{
+                    const product = {
+                        productId: prodId,
+                        quantity: 1
+                    }
                     cart.products.push(product)
                 }
             })  
-    }
+        }
+
         
     };
 

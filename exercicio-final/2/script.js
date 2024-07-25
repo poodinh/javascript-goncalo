@@ -71,7 +71,7 @@ const addToCart = (grid, dataBase) => {
     
     buttons[i].setAttribute("id", `${allIds[i]}`); //the id of the button is the same as the product
 
-    buttons[i].addEventListener("click", (event) => {
+    buttons[i].addEventListener("click", () => {
       const isProdInCart = cart.products.findIndex(
         (prodInCart) => prodInCart.productId === prodId
       );

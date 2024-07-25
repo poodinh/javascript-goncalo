@@ -1,4 +1,3 @@
-
 //getting the data
 const formatedDate = () => {
   const date = new Date();
@@ -54,85 +53,72 @@ const cartButton = async () => {
   const dataBase = await data();
   const gridCreated = await productsGrid();
 
-  const allIds = dataBase.map((data) => data.id);
-
   //creation of the buttons
   const prodBlock = gridCreated.querySelectorAll(".product--block");
   prodBlock.forEach((div) => {
     div.insertAdjacentHTML("beforeend", `<button> Add to Cart </button>`);
   });
 
-  //creation of the updating the cart functions to the buttons
-  const buttons = gridCreated.querySelectorAll("button");
+  addToCart(gridCreated, dataBase);
+};
 
+//creation of the updating the cart functions to the buttons
+const addToCart = (grid, dataBase) => {
+  const buttons = grid.querySelectorAll("button");
+  const allIds = dataBase.map((data) => data.id);
   for (i = 0; i <= dataBase.length - 1; i++) {
     const prodId = allIds[i];
+    buttons[i].setAttribute("id", `${allIds[i]}`);
 
-    buttons[i].addEventListener("click", () => {
-        const isProdInCart = cart.products.findIndex(
-            (prodInCart) => prodInCart.productId === prodId
-        );
-        if (isProdInCart !== -1) {
-            //updating the quantity in the cart and the API
-            cart.products[isProdInCart].quantity += 1;
-            const updateCart= async ()=>{
-                try{
-                    const response = await fetch("https://fakestoreapi.com/carts/7", {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(cart),
-                    });
-                    if (response.ok) {
-                        const cartData = await response.json();
-                        console.log('Cart updated successfully:', cartData);
-                    } else {
-                        console.error('Failed to update cart');
-                    }
-                }
-                catch(error) {
-                    console.error('Error:', error);
-                }
-            }
-            updateCart()
-        } else {
-            //creating a new cart 
-            const product = {
-                productId: prodId,
-                quantity: 1,
-            };
-            cart.products.push(product);
-            const createCart= async ()=>{
-                try{
-                    const response = await fetch("https://fakestoreapi.com/carts/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(cart),
-                    });
-                    if (response.ok) {
-                        const cartData = await response.json();
-                        console.log('Cart sent successfully:', cartData);
-                    } else {
-                        console.error('Failed to send cart');
-                    }
-                }
-                catch(error) {
-                    console.error('Error:', error);
-                }
-            }
-            createCart()
-            
-        }
-        
-        
-        
-        
+    buttons[i].addEventListener("click", (event) => {
+      const isProdInCart = cart.products.findIndex(
+        (prodInCart) => prodInCart.productId === prodId
+      );
+      if (isProdInCart !== -1) {
+        //updating the quantity in the cart and the API
+        cart.products[isProdInCart].quantity += 1;
+      } else {
+        //creating a new cart
+        const product = {
+          productId: prodId,
+          quantity: 1,
+        };
+        cart.products.push(product);
+      }
+      updateCart();
     });
-    
   }
+  ex3(buttons);
+};
+
+const updateCart = async () => {
+  try {
+    const response = await fetch("https://fakestoreapi.com/carts/7", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cart),
+    });
+    if (!response) {
+      throw new error("Failed to update cart");
+    }
+    const cartData = await response.json();
+    console.log("Cart updated successfully:", cartData);
+  } catch (error) {
+    throw new error("Error:", error);
+  }
+};
+
+const ex3 = (buttons) => {
+  buttons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      const buttonId = event.target.id;
+
+      // store the button ID in local storage
+      localStorage.setItem("clickedButtonId", buttonId);
+    });
+  });
 };
 
 cartButton();

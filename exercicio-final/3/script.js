@@ -26,12 +26,14 @@ const data = async () => {
 
 //getting the product info and creating the html
 const info = async () => {
+  //id from the url
+  const apiLength = api.length;
+  const id = api.slice(apiLength-1);
   //product info
   const dataBase = await data();
   const {
     category,
     description,
-    id,
     image,
     title,
     rating: { rate, count },
@@ -52,7 +54,7 @@ const info = async () => {
     <p>Description: ${description}</p>`
   );
 
-  productsSameCategory(category,id)
+  productsSameCategory(category, id);
 };
 
 info();
@@ -69,62 +71,19 @@ const categoryApi = async (category) => {
 //insert the first three of the same categorie to the bottom of the page (in case they aren't the same as the one being displayed)
 const productsSameCategory = async (category, productId) => {
   const dataBase = await categoryApi(category);
-  const [firstProd, secondProd, thirdProd, forthProd] = dataBase;
+  //removing the displayed product from the categories array
+  const categoriesWithoutDiplayedProd = dataBase.filter(
+    (prod) => prod.id !== productId
+  );
+  const [firstProd, secondProd, thirdProd] = categoriesWithoutDiplayedProd;
+  //creating the bottom div for them
   const categories = document.createElement("div");
   categories.setAttribute("class", "category");
   document.body.appendChild(categories);
 
   //conditions if the product displayed is the same as the first three products
-  if (productId === firstProd.id) {
-    categories.insertAdjacentHTML(
-      'beforeEnd',
-      `<div class="category--product">
-        <p>Title: ${secondProd.title}</p>
-        <img src="${secondProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${thirdProd.title}</p>
-        <img src="${thirdProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${forthProd.title}</p>
-        <img src="${forthProd.image}" alt="">
-      </div>`
-    );
-  } else if (productId === secondProd.id) {
-    categories.insertAdjacentHTML(
-      'beforeEnd',
-      `<div class="category--product">
-        <p>Title: ${firstProd.title}</p>
-        <img src="${firstProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${thirdProd.title}</p>
-        <img src="${thirdProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${forthProd.title}</p>
-        <img src="${forthProd.image}" alt="">
-      </div>`
-    );
-  } else if (productId === thirdProd.id) {
-    categories.insertAdjacentHTML(
-      'beforeEnd',
-      `<div class="category--product">
-        <p>Title: ${firstProd.title}</p>
-        <img src="${firstProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${secondProd.title}</p>
-        <img src="${secondProd.image}" alt="">
-      </div>
-      <div class="category--product">
-        <p>Title: ${forthProd.title}</p>
-        <img src="${forthProd.image}" alt="">
-      </div>`
-    );
-  } else {categories.insertAdjacentHTML(
-    'beforeEnd',
+  categories.insertAdjacentHTML(
+    "beforeEnd",
     `<div class="category--product">
         <p>Title: ${firstProd.title}</p>
         <img src="${firstProd.image}" alt="">
@@ -138,5 +97,20 @@ const productsSameCategory = async (category, productId) => {
         <img src="${thirdProd.image}" alt="">
       </div>
       `
-  );}
+  );
+
+//adding the copyright year to the end of the page
+  categories.insertAdjacentHTML(
+    "afterEnd",
+    `<p>Copyright ${formatedDate()}</p>
+      `
+  );
+};
+
+//getting the year
+
+const formatedDate = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  return year;
 };

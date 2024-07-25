@@ -1,4 +1,4 @@
-//getting the data
+//getting the date
 const formatedDate = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -62,23 +62,24 @@ const cartButton = async () => {
   addToCart(gridCreated, dataBase);
 };
 
-//creation of the updating the cart functions to the buttons
+//updating the cart
 const addToCart = (grid, dataBase) => {
   const buttons = grid.querySelectorAll("button");
   const allIds = dataBase.map((data) => data.id);
   for (i = 0; i <= dataBase.length - 1; i++) {
     const prodId = allIds[i];
-    buttons[i].setAttribute("id", `${allIds[i]}`);
+    
+    buttons[i].setAttribute("id", `${allIds[i]}`); //the id of the button is the same as the product
 
     buttons[i].addEventListener("click", (event) => {
       const isProdInCart = cart.products.findIndex(
         (prodInCart) => prodInCart.productId === prodId
       );
       if (isProdInCart !== -1) {
-        //updating the quantity in the cart and the API
+        //updating the quantity in the cart
         cart.products[isProdInCart].quantity += 1;
       } else {
-        //creating a new cart
+        //creating a new product in the cart
         const product = {
           productId: prodId,
           quantity: 1,
@@ -91,6 +92,7 @@ const addToCart = (grid, dataBase) => {
   ex3(buttons);
 };
 
+//updating the cart in the api
 const updateCart = async () => {
   try {
     const response = await fetch("https://fakestoreapi.com/carts/7", {
@@ -110,12 +112,13 @@ const updateCart = async () => {
   }
 };
 
+//info for ex 3
 const ex3 = (buttons) => {
   buttons.forEach((button) => {
     button.addEventListener("click", function (event) {
       const buttonId = event.target.id;
 
-      // store the button ID in local storage
+      // the id of the button is stored locally
       localStorage.setItem("clickedButtonId", buttonId);
     });
   });

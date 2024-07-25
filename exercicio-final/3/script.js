@@ -27,8 +27,7 @@ const data = async () => {
 //getting the product info and creating the html
 const info = async () => {
   //id from the url
-  const apiLength = api.length;
-  const id = api.slice(apiLength-1);
+  const id = api.split("/").pop();
   //product info
   const dataBase = await data();
   const {

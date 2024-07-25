@@ -70,10 +70,12 @@ const categoryApi = async (category) => {
 //insert the first three of the same categorie to the bottom of the page (in case they aren't the same as the one being displayed)
 const productsSameCategory = async (category, productId) => {
   const dataBase = await categoryApi(category);
+  console.log(dataBase)
   //removing the displayed product from the categories array
   const categoriesWithoutDiplayedProd = dataBase.filter(
-    (prod) => prod.id !== productId
+    (prod) => prod.id != productId
   );
+  console.log(categoriesWithoutDiplayedProd)
   const [firstProd, secondProd, thirdProd] = categoriesWithoutDiplayedProd;
   //creating the bottom div for them
   const categories = document.createElement("div");
